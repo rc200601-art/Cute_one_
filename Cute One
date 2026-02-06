@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For the Cute One</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(-45deg, #ff4f81, #ff8fab, #ffc2d1, #ff4f81);
+  background-size: 400% 400%;
+  animation: bg 10s ease infinite;
+}
+
+@keyframes bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  text-align: center;
+  max-width: 90%;
+}
+
+h1 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+button {
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#yes {
+  background: white;
+  color: #ff4f81;
+}
+
+#no {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  position: absolute;
+}
+
+.rose {
+  width: 140px;
+  margin: 20px auto;
+  animation: float 2.5s ease-in-out infinite;
+}
+
+.me {
+  width: 140px;
+  border-radius: 50%;
+  margin-top: 15px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+.fall {
+  position: fixed;
+  top: -20px;
+  font-size: 24px;
+  animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+  <h1>FOR THE CUTE ONE 💗</h1>
+  <p>Choose wisely.</p>
+  <button id="yes" onclick="start()">Receive a rose 🌹</button>
+  <button id="no">No 🙅‍♀️</button>
+</div>
+
+<script>
+// ===== NO BUTTON (IMPOSSIBLE MODE) =====
+const noBtn = document.getElementById("no");
+
+document.addEventListener("mousemove", (e) => {
+  const r = noBtn.getBoundingClientRect();
+  const dx = e.clientX - (r.left + r.width / 2);
+  const dy = e.clientY - (r.top + r.height / 2);
+  const dist = Math.sqrt(dx*dx + dy*dy);
+
+  if (dist < 120) {
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+  }
+});
+
+// ===== ROSE SEQUENCE =====
+const roses = [
+  { img: "red.png", text: "Classic. Some things don’t need improvement." },
+  { img: "pink.png", text: "Soft… and impossible to ignore." },
+  { img: "lightpink.png", text: "Doesn’t try hard. Still wins." },
+  { img: "white.png", text: "Calm on the outside. Dangerous inside." },
+  { img: "blue.png", text: "Rare. Not everyone gets this." },
+  { img: "bouquet.png", text: "Okay fine. I lost control here." }
+];
+
+let index = 0;
+
+function start() {
+  showRose();
+}
+
+function showRose() {
+  const r = roses[index];
+
+  document.getElementById("app").innerHTML = `
+    <h1>${r.text}</h1>
+    <img src="${r.img}" class="rose">
+    <img src="me.png" class="me">
+    <br>
+    <button id="yes" onclick="next()">Click again 🌹</button>
+  `;
+}
+
+function next() {
+  index++;
+  if (index < roses.length) {
+    showRose();
+  } else {
+    finale();
+  }
+}
+
+// ===== FLOWER SHOWER =====
+function finale() {
+  document.getElementById("app").innerHTML = `
+    <h1>Happy Rose Day Srishti 🥰</h1>
+    <p>It’s me… don’t judge.<br>I just can’t help doing these little things for you 💗</p>
+  `;
+
+  for (let i = 0; i < 35; i++) {
+    const f = document.createElement("div");
+    f.className = "fall";
+    f.innerText = "🌸";
+    f.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(f);
+  }
+}
+</script>
+
+</body>
+</html>
